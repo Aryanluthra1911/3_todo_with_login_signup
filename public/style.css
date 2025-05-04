@@ -2,10 +2,18 @@
     margin: 0;
     padding: 0;
 }
-
+#message{
+    padding-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    color: red;
+    font-size: large;
+}
 body{
     height: 100vh;
-    background: linear-gradient(to right,rgb(0, 51, 102),rgb(0, 115, 230));
+    background: linear-gradient(to right,rgb(0, 0, 0),rgb(62, 64, 65));
 }
 header{
     height: 50px;
@@ -55,7 +63,7 @@ header{
     color: #ffff;
     font-size: medium;
     font-weight: 700;
-    background: linear-gradient(to right,rgb(0, 51, 102),rgb(0, 115, 230));
+    background: linear-gradient(to right,rgb(0, 0, 0),rgb(62, 64, 65));
 }
 #details{
     width: 100%;
@@ -102,7 +110,7 @@ header{
     font-weight: 700;
     border: none;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-    background: linear-gradient(to right,rgb(0, 51, 102),rgb(0, 115, 230));
+    background: linear-gradient(to right,rgb(0, 0, 0),rgb(62, 64, 65));
 }
 #signup2{
     color: #ffff;
@@ -113,7 +121,7 @@ header{
     font-weight: 700;
     border: none;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-    background: linear-gradient(to right,rgb(0, 51, 102),rgb(0, 115, 230));
+    background: linear-gradient(to right,rgb(0, 0, 0),rgb(62, 64, 65));
 }
 
 #text{

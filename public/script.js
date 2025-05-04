@@ -2,6 +2,7 @@ let login = document.getElementById('login');
 let signup = document.getElementById('signup')
 let signup2 = document.getElementById('signup2');
 let login2 = document.getElementById('login2');
+let messagebox = document.getElementById('message')
 
 function move_to_signup(){
     axios.get('/signup')
@@ -34,14 +35,18 @@ signup2.addEventListener('click',()=>{
         name:name,
         email:email,
         password:password
-    }).then(()=>{
-        axios.get('/signup_success')
-            .then(()=>{
-                window.location.href = '/signup_success';
-            }).catch((error)=>{
-                console.error('Request failed:', error);
-            })
-    }).catch(()=>{
+    }).then((res)=>{
+        if(res.data.success){
+            window.location.href = '/signup_success';
+        }
+        else {
+            messagebox.innerText= 'Account already exists, Redirecting to Login...';
+            setTimeout(()=>{
+                window.location.href = '/login';
+            },3000)
+        }
+        
+    }).catch((error)=>{
         console.error('Request failed:', error);
     })
     

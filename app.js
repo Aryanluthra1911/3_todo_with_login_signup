@@ -35,9 +35,10 @@ app.post('/signup',async(req,res)=>{
     try{
         let hashed_password = await bcrypt.hash(password, 12);
         let user = await credentials.findOne({ email });
-        if (user) return res.status(201).json({
-            message: 'Name already exist, try another username'
-        })
+        if (user) return res.json({ 
+            success: false, 
+            message: 'Email already exists' 
+        });
     
         const New_credentials = new credentials({
             name: name,
@@ -45,6 +46,7 @@ app.post('/signup',async(req,res)=>{
             password:hashed_password
         });
         New_credentials.save()
+        res.json({ success: true });
     }
     catch(err){
         console.error(err)
