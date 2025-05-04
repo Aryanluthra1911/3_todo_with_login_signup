@@ -1,9 +1,7 @@
-
 let login = document.getElementById('login');
 let signup = document.getElementById('signup')
-let tag = document.getElementById('tag');
 let signup2 = document.getElementById('signup2');
-
+let login2 = document.getElementById('login2');
 
 function move_to_signup(){
     axios.get('/signup')
@@ -48,8 +46,12 @@ signup2.addEventListener('click',()=>{
     })
     
 })
+/*login2.addEventListener('click',()=>{
+    let email = (document.getElementById('email')).value;
+    let password = (document.getElementById('password')).value;
+    axios.post('/login')
 
-tag.addEventListener('click',(ev)=>{
-    move_to_signup();
-})
+})*/
+
+
 

@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 const port = 4444;
 const mongoose = require('mongoose');
-
+const bcrypt = require('bcrypt')
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname,`public`)));
@@ -25,29 +25,33 @@ const credentials = mongoose.model('credentials',signup_schema);
 app.get('/login',(req,res)=>{
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 })
-app.post('/signup',(req,res)=>{
-    let {name} = req.body;
-    let {email} = req.body;
-    let {password} = req.body;
 
-    const New_credentials = new credentials({
-        name: name,
-        email: email,
-        password:password
-    });
-    New_credentials.save()
-        .then(()=>{
-            res.send({
-                msg: "added data"
-            });
+
+app.get('/signup',(req,res)=>{
+    res.sendFile(path.join(__dirname,'public','signup.html'))
+})
+app.post('/signup',async(req,res)=>{
+    let {name,email,password} = req.body;
+    try{
+        let hashed_password = await bcrypt.hash(password, 12);
+        let user = await credentials.findOne({ email });
+        if (user) return res.status(201).json({
+            message: 'Name already exist, try another username'
         })
-        .catch(err => console.error(err));
+    
+        const New_credentials = new credentials({
+            name: name,
+            email: email,
+            password:hashed_password
+        });
+        New_credentials.save()
+    }
+    catch(err){
+        console.error(err)
+    }
 })
 app.get('/signup_success',(req,res)=>{
     res.sendFile(path.join(__dirname,'public','signup_page.html'))
-})
-app.get('/signup',(req,res)=>{
-    res.sendFile(path.join(__dirname,'public','signup.html'))
 })
 
 mongoose.connect('mongodb://localhost:27017/login_credentials')
@@ -56,4 +60,6 @@ mongoose.connect('mongodb://localhost:27017/login_credentials')
         app.listen(port, () => {
             console.log(`http://localhost:` + port +`/login`);
         });
+    }).catch((err)=>{
+        console.log("server")
     })

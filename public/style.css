@@ -123,9 +123,3 @@ header{
     align-items: end;
     justify-content: center;
 }
-#tag{
-    padding-left: 10px;
-    border: none;
-    background-color: #ffff;
-    color: rgb(0, 115, 230);
-}
