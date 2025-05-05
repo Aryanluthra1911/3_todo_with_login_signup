@@ -25,7 +25,33 @@ const credentials = mongoose.model('credentials',signup_schema);
 app.get('/login',(req,res)=>{
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 })
-
+app.post('/login',async(req,res)=>{
+    let {email,password}=req.body;
+    try{
+        const user= await credentials.findOne({email})
+        if (!user) return res.json({ 
+            success: false, 
+            message: 'User Not Found' 
+        });
+        const pass_check= await bcrypt.compare(password,user.password);
+        if(pass_check){
+            return res.json({
+                success:true,
+                message:'login succesfull'
+            })
+        }
+        res.json({
+            success:false,
+            message:'Incorrect Password'
+        })
+    }
+    catch{
+        res.json({
+            success:false,
+            message:'Login Falied'
+        })
+    }
+})
 
 app.get('/signup',(req,res)=>{
     res.sendFile(path.join(__dirname,'public','signup.html'))
