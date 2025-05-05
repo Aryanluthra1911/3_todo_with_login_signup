@@ -5,6 +5,23 @@ let login2 = document.getElementById('login2');
 let messagebox = document.getElementById('message')
 let url = window.location.href
 
+function move_to_signup(){
+    axios.get('/signup')
+        .then(()=>{
+            window.location.href = '/signup';
+        }).catch(()=>{
+            console.error('Request failed:', error);
+        })
+}
+var move_to_login = ()=>{
+    axios.get('/login')
+        .then(()=>{
+            window.location.href = '/login';
+        }).catch((error)=>{
+            console.error('Request failed:', error);
+        })
+}
+
 if (url === "http://localhost:4444/login") {
     login2.addEventListener('click',()=>{
         console.log('clicked')
@@ -18,7 +35,7 @@ if (url === "http://localhost:4444/login") {
                 messagebox.innerText= res.data.message;
             }
             else{
-                window.location.href = '/signup_success';
+                window.location.href = '/login_success';
             }
         }).catch((error)=>{
             console.error('Request failed:', error);
@@ -51,26 +68,14 @@ if (url === "http://localhost:4444/signup") {
     })
 
 }
-function move_to_signup(){
-    axios.get('/signup')
-        .then(()=>{
-            window.location.href = '/signup';
-        }).catch(()=>{
-            console.error('Request failed:', error);
-        })
+
+if(url === "http://localhost:4444/signup" || url ==="http://localhost:4444/login"){
+    login.addEventListener('click',(ev)=>{
+        move_to_login()
+    })
+    signup.addEventListener('click',(ev)=>{
+        console.log("clicked");
+        move_to_signup();
+    })
 }
-var move_to_login = ()=>{
-    axios.get('/login')
-        .then(()=>{
-            window.location.href = '/login';
-        }).catch((error)=>{
-            console.error('Request failed:', error);
-        })
-}
-login.addEventListener('click',(ev)=>{
-    move_to_login()
-})
-signup.addEventListener('click',(ev)=>{
-    console.log("clicked");
-    move_to_signup();
-})
+
