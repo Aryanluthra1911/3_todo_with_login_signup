@@ -1,7 +1,7 @@
 let login = document.getElementById('login');
 let signup = document.getElementById('signup')
-let signup2 = document.getElementById('signup2');
-let login2 = document.getElementById('login2');
+let loginform = document.getElementById('loginform');
+let signupform = document.getElementById('signupform');
 let messagebox = document.getElementById('message')
 let url = window.location.href
 
@@ -23,16 +23,26 @@ var move_to_login = ()=>{
 }
 
 if (url === "http://localhost:4444/login") {
-    login2.addEventListener('click',()=>{
-        console.log('clicked')
+    loginform.addEventListener('submit',(event)=>{
+        event.preventDefault();
         let email = (document.getElementById('email')).value;
         let password = (document.getElementById('password')).value;
+        
         axios.post('/login',{
             email:email,
             password:password
         }).then((res)=>{
             if(!res.data.success){
-                messagebox.innerText= res.data.message;
+                if(res.data.message === 'User Not Found'){
+                    setTimeout(()=>{
+                        window.location.href = '/signup';
+                    },3000)
+                    messagebox.innerText= res.data.message+' Redirecting to Signup...';
+                }
+                else{
+                    messagebox.innerText= res.data.message;
+                }
+                
             }
             else{
                 window.location.href = '/login_success';
@@ -44,7 +54,8 @@ if (url === "http://localhost:4444/login") {
 }
 
 if (url === "http://localhost:4444/signup") {
-    signup2.addEventListener('click',()=>{
+    signupform.addEventListener('submit',(event)=>{
+        event.preventDefault();
         let name = (document.getElementById('name')).value;
         let email = (document.getElementById('email')).value;
         let password = (document.getElementById('password')).value;

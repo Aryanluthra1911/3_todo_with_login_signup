@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>signup</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .box{
@@ -22,21 +22,14 @@
                 <button id="signup" class="active">Signup</button>
             </div>
             <p id="message"></p>
-
-            <div id="details">
-                <div class="box" style="padding-top: 0.5cm;">
-                    <input type="text" placeholder="Full name" id="name">
-                </div>
-                <div class="box">
-                    <input type="email" placeholder="Email Address" name="" id="email">
-                </div>
-                <div class="box" style="padding-bottom:5 ;">
-                    <input type="password" placeholder="Password" name="" id="password">
-                </div>
-            </div>
-            <div class="box">
-                <button id="signup2">Signup</button>
-            </div>
+            <form action="" class="details" id="signupform" style="height: 350px;">
+                <input type="text" placeholder="Full name" id="name">
+                <input type="email" placeholder="Email Address" name="" id="email">
+                <input type="password" placeholder="Password" name="" id="password">
+                <button id="signup2" type="submit">Signup</button>
+            </form>
+            
+            
         </div>
     </div>
     <script src="./script.js" defer></script>

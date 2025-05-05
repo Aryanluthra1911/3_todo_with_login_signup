@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>login</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
@@ -15,17 +15,11 @@
                 <button id="signup">Signup</button>
             </div>
             <p id="message"></p>
-            <div id="details">
-                <div class="box">
-                    <input type="email" placeholder="Email Address" name="" id="email">
-                </div>
-                <div class="box" style="padding-bottom:5 ;">
-                    <input type="password" placeholder="Password" name="" id="password">
-                </div>
-            </div>
-            <div class="box" style="padding: 0px;">
-                <button id="login2">Login</button>
-            </div>
+            <form action="" class="details" id="loginform" >
+                <input type="email" placeholder="Email Address" name="" id="email" class="box">
+                <input type="password" placeholder="Password" name="" id="password">
+                <button id="login2" type="submit">Login</button>
+            </form>
             <div id="text">
                 Not a member?<a href="/signup" style="text-decoration: none; color: rgb(0, 115, 230); font-size: large;">Signup now</a>
             </div>
