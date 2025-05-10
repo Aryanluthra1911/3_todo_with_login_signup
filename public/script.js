@@ -28,28 +28,34 @@ if (url === "http://localhost:4444/login") {
         let email = (document.getElementById('email')).value;
         let password = (document.getElementById('password')).value;
         
-        axios.post('/login',{
-            email:email,
-            password:password
-        }).then((res)=>{
-            if(!res.data.success){
-                if(res.data.message === 'User Not Found'){
-                    setTimeout(()=>{
-                        window.location.href = '/signup';
-                    },3000)
-                    messagebox.innerText= res.data.message+' Redirecting to Signup...';
+        if(email.trim() =='' || password.trim() ==''){
+            messagebox.innerText = "No Data Added"
+            loginform.disabled= true;
+        }
+        else{
+            axios.post('/login',{
+                email:email,
+                password:password
+            }).then((res)=>{
+                if(!res.data.success){
+                    if(res.data.message === 'User Not Found'){
+                        setTimeout(()=>{
+                            window.location.href = '/signup';
+                        },3000)
+                        messagebox.innerText= res.data.message+' Redirecting to Signup...';
+                    }
+                    else{
+                        messagebox.innerText= res.data.message;
+                    }
+                    
                 }
                 else{
-                    messagebox.innerText= res.data.message;
+                    window.location.href = '/login_success';
                 }
-                
-            }
-            else{
-                window.location.href = '/login_success';
-            }
-        }).catch((error)=>{
-            console.error('Request failed:', error);
-        })
+            }).catch((error)=>{
+                console.error('Request failed:', error);
+            })
+        }
     })
 }
 
@@ -59,23 +65,29 @@ if (url === "http://localhost:4444/signup") {
         let name = (document.getElementById('name')).value;
         let email = (document.getElementById('email')).value;
         let password = (document.getElementById('password')).value;
-        axios.post('/signup',{
-            name:name,
-            email:email,
-            password:password
-        }).then((res)=>{
-            if(res.data.success){
-                window.location.href = '/signup_success';
-            }
-            else {
-                messagebox.innerText= 'Account already exists, Redirecting to Login...';
-                setTimeout(()=>{
-                    window.location.href = '/login';
-                },3000)
-            }
-        }).catch((error)=>{
-            console.error('Request failed:', error);
-        })
+        if(email.trim() =='' || password.trim() ==''||name.trim()==''){
+            messagebox.innerText = "No Data Added"
+            signupform.disabled= true;
+        }
+        else{
+            axios.post('/signup',{
+                name:name,
+                email:email,
+                password:password
+            }).then((res)=>{
+                if(res.data.success){
+                    window.location.href = '/signup_success';
+                }
+                else {
+                    messagebox.innerText= 'Account already exists, Redirecting to Login...';
+                    setTimeout(()=>{
+                        window.location.href = '/login';
+                    },3000)
+                }
+            }).catch((error)=>{
+                console.error('Request failed:', error);
+            })
+        }
     })
 
 }
