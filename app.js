@@ -3,11 +3,21 @@ const express = require('express')
 const app = express()
 const port = 4444;
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname,`public`)));
 app.use(express.json());
+
+const JWT_SECRET_KEY='HELLO';
+
+app.post('/generate_token', (req, res) => {
+    let {email,password} = req.body;
+    var token = jwt.sign({email:email , password:password}, JWT_SECRET_KEY, { expiresIn: '1h' });
+    console.log(token)
+    res.send(token)
+})
 
 const signup_schema =  new mongoose.Schema({
     name:String,
