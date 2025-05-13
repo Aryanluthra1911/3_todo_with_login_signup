@@ -5,18 +5,31 @@ const port = 4444;
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
+const cookie = require('cookie')
+var cookieParser = require('cookie-parser')
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname,`public`)));
 app.use(express.json());
+app.use(cookieParser())
 
 const JWT_SECRET_KEY='HELLO';
 
-app.post('/generate_token', (req, res) => {
-    let {email,password} = req.body;
-    var token = jwt.sign({email:email , password:password}, JWT_SECRET_KEY, { expiresIn: '1h' });
-    console.log(token)
-    res.send(token)
+function authenticateToken(req, res, next) {
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ message: 'Access Denied' });
+
+    try {
+        const verified = jwt.verify(token, JWT_SECRET_KEY);
+        req.user = verified;
+        next();
+    } catch (err) {
+        res.status(400).json({ message: 'Invalid Token' });
+    }
+}
+
+app.get('/dashboard',authenticateToken,(req,res)=>{
+    res.send("welcome to dasboard")
 })
 
 const signup_schema =  new mongoose.Schema({
@@ -36,6 +49,7 @@ app.get('/login',(req,res)=>{
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 })
 app.post('/login',async(req,res)=>{
+    
     let {email,password}=req.body;
     try{
         const user= await credentials.findOne({email})
@@ -43,8 +57,14 @@ app.post('/login',async(req,res)=>{
             success: false, 
             message: 'User Not Found' 
         });
+        let hashed_password = await bcrypt.hash(password, 12);
         const pass_check= await bcrypt.compare(password,user.password);
         if(pass_check){
+            const token = jwt.sign({email:email , password:hashed_password}, JWT_SECRET_KEY, { expiresIn: '1h' });
+            res.cookie('token',token,{
+                maxAge: 60 * 60 * 24 * 7,
+                httpOnly: true
+            })
             return res.json({
                 success:true,
                 message:'login succesfull'
@@ -55,7 +75,8 @@ app.post('/login',async(req,res)=>{
             message:'Incorrect Password'
         })
     }
-    catch{
+    catch(err){
+        console.error('Login Error:', err);
         res.json({
             success:false,
             message:'Login Falied'
@@ -85,6 +106,12 @@ app.post('/signup',async(req,res)=>{
             password:hashed_password
         });
         New_credentials.save()
+        const token = jwt.sign({email:email , password:hashed_password}, JWT_SECRET_KEY, { expiresIn: '1h' });
+            
+        res.cookie('token',token,{
+            maxAge: 60 * 60 * 24 * 7,
+            httpOnly: true
+        })
         res.json({ success: true });
     }
     catch(err){

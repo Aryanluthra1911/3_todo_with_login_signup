@@ -50,11 +50,7 @@ if (url === "http://localhost:4444/login") {
                     
                 }
                 else{
-                    axios.post('/generate_token',{
-                        email:email,
-                        password:password
-                    })
-                    window.location.href = '/login_success';
+                    window.location.href = '/dashboard';
                 }
             }).catch((error)=>{
                 console.error('Request failed:', error);
@@ -80,11 +76,7 @@ if (url === "http://localhost:4444/signup") {
                 password:password
             }).then((res)=>{
                 if(res.data.success){
-                    axios.post('/generate_token',{
-                        email:email,
-                        password:password
-                    })
-                    window.location.href = '/signup_success';
+                    window.location.href = '/dashboard';
                 }
                 else {
                     messagebox.innerText= 'Account already exists, Redirecting to Login...';
